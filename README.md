@@ -1,6 +1,8 @@
-# Site to Site VPN between Azure and GC (static routing)
+# Site-to-Site VPN between Azure and GC (static routing)
 
-Lab to build Azure Hub Spoke with S2S VPN to GCP using static routing
+Lab to build Azure Hub Spoke with S2S VPN to GCP using static routing.
+
+![](https://api.visitorbadge.io/api/VisitorHit?user=estruyf&repo=github-visitors-badge&countColor=%237B1E7A)
 
 ## Intro
 
