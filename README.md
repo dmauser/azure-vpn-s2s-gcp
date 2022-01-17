@@ -2,8 +2,6 @@
 
 Lab to build Azure Hub Spoke with S2S VPN to GCP using static routing.
 
-![](https://api.visitorbadge.io/api/VisitorHit?user=estruyf&repo=github-visitors-badge&countColor=%237B1E7A)
-
 ## Intro
 
 The goal of this lab is to create a S2S VPN between Azure and GCP.
