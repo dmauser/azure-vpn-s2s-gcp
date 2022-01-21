@@ -1,8 +1,6 @@
-# Site-to-Site VPN between Azure and GC (static routing)
+# Site-to-Site VPN between Azure and GCP (static routing)
 
 Lab to build Azure Hub Spoke with S2S VPN to GCP using static routing.
-
-[![Visitors](https://api.visitorbadge.io/api/visitors?path=https%3A%2F%2Fgithub.com%2Fdmauser%2Fazure-vpn-s2s-gcp-static&countColor=%23263759)](https://visitorbadge.io/status?path=https%3A%2F%2Fgithub.com%2Fdmauser%2Fazure-vpn-s2s-gcp-static)
 
 ## Intro
 
@@ -16,7 +14,7 @@ You can also use GCP as emulated on-premises environment connecting to Azure.
 
 ### Prerequisites
 
-You can get Azure CLI and GCP CLI in the same shell as well OS. That will make your life easier provisioning this solution.
+You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will make your life easier provisioning this solution. The steps below have been validated on Ubuntu 18.4.
 
 - Azure CLI installation instructions: [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
 - GCP CLI instruction follow: [What is gcloud and How to install on Windows, macOS and Linux?](https://geekflare.com/gcloud-installation-guide/)
