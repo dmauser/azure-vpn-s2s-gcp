@@ -1,10 +1,9 @@
-# Run commands below over Linux VM with Azure CLI and gcloud installed.
+# Run commands below over Linux VM (Ubuntu/Debian) with Azure CLI and GCP CLI installed.
 
-#Prerequisite
+#Prerequisite - Install AZ and GCP CLI:
 # Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest
 curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
 # GCP CLI: https://cloud.google.com/sdk/docs/install#deb
-
 
 # Login/Subscription
 az login
