@@ -94,12 +94,12 @@ gcloud compute networks subnets create $envname-subnet --project=$project --rang
 sudo gcloud compute firewall-rules create $envname-allow-traffic-from-azure --network $envname-vpc --allow tcp,udp,icmp --source-ranges 192.168.0.0/16,10.0.0.0/8,172.16.0.0/16,35.235.240.0/20,$mypip/32
 
 #Create Ubuntu VM:
-sudo gcloud compute instances create $envname-vm1 --project=$project --zone=$zone --machine-type=f1-micro --network-interface=subnet=$envname-subnet,network-tier=PREMIUM --image=ubuntu-1804-bionic-v20210817 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-balanced --boot-disk-device-name=$envname-vm1 
+sudo gcloud compute instances create $envname-vm1 --project=$project --zone=$zone --machine-type=f1-micro --network-interface=subnet=$envname-subnet,network-tier=PREMIUM --image=ubuntu-1804-bionic-v20220118 --image-project=ubuntu-os-cloud --boot-disk-size=10GB --boot-disk-type=pd-balanced --boot-disk-device-name=$envname-vm1 
 
 #GCP VPN
 sudo gcloud compute target-vpn-gateways create onpremvpn --project=$project --region=$region --network=$envname-vpc 
 sudo gcloud compute addresses create onpremvpn-pip --project=$project --region=$region
-sudo gcpvpnpip=$(gcloud compute addresses describe onpremvpn-pip --region=$region --project=$project --format='value(address)')
+gcpvpnpip=$(sudo gcloud compute addresses describe onpremvpn-pip --region=$region --project=$project --format='value(address)')
 sudo gcloud compute forwarding-rules create onpremvpn-rule-esp --project=$project --region=$region --address=$gcpvpnpip --ip-protocol=ESP --target-vpn-gateway=onpremvpn 
 sudo gcloud compute forwarding-rules create onpremvpn-rule-udp500 --project=$project --region=$region --address=$gcpvpnpip --ip-protocol=UDP --ports=500 --target-vpn-gateway=onpremvpn 
 sudo gcloud compute forwarding-rules create onpremvpn-rule-udp4500 --project=$project --region=$region --address=$gcpvpnpip --ip-protocol=UDP --ports=4500 --target-vpn-gateway=onpremvpn
@@ -140,8 +140,10 @@ sudo gcloud compute routes create vpn-to-azure-route-1 --project=$project --netw
 - Azure
 
 ```bash
-# Check VPN Status on Azure side
+# a) Check Connection Status
 az network vpn-connection show -g $rg --n Azure-to-OnpremGCP --query connectionStatus -o tsv
+
+# b) Check vpn connection IKE/SAs details
 az network vpn-connection list-ike-sas -g $rg --n Azure-to-OnpremGCP
 ```
 
@@ -168,10 +170,13 @@ echo $Azurespoke2Name-lxvm && az network nic show --resource-group $rg -n $Azure
 sudo gcloud compute ssh $envname-vm1 --zone=$zone
 
 # Inside GCP VM ping Azure VM
-ping 10.0.10.4 #Azure Hub VM
-ping 10.0.11.4 #Azure Spoke 1 VM
-ping 10.0.12.4 #Azure Spoke 2 VM
+ping 10.0.10.4 -O -c 5 #Az-Hub-Lxvm
+ping 10.0.11.4 -O -c 5 #Az-Spk1-lxvm
+ping 10.0.12.4 -O -c 5 #Az-Spk2-lxvm
 ```
+
+Optional - You can logon on any Azure VM and ping GCP VM IP (192.168.0.2).
+
 ## Clean up
 
 - (GCP) remove lab environment. 
