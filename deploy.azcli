@@ -18,7 +18,7 @@ location=centralus #Set Region
 mypip=$(curl -4 ifconfig.io -s) #Captures your local Public IP and adds it to NSG to restrict access to SSH only for your Public IP.
 sharedkey=$(openssl rand -base64 24) #VPN Gateways S2S shared key is automatically generated.
 
-#Define parameters for Azure Hub and Spokes (Optional):
+#Define parameters for Azure Hub and Spokes:
 AzurehubName=Az-Hub #Azure Hub Name
 AzurehubaddressSpacePrefix=10.0.10.0/24 #Azure Hub VNET address space
 AzurehubNamesubnetName=subnet1 #Azure Hub Subnet name where VM will be provisioned
@@ -46,9 +46,9 @@ az deployment group create --name VPNERCoexist-$RANDOM --resource-group $rg \
 --parameters deployHubVPNGateway=true gatewaySku=VpnGw1 vpnGatewayGeneration=Generation1 Restrict_SSH_VM_AccessByPublicIP=$mypip sharedKey=$sharedkey deployHubERGateway=false Onprem=$JsonOnPrem Azure=$JsonAzure \
 --output none
 
-# Define GCP variables
-project=angular-expanse-327722 #Set your project Name. Get your PROJECT_ID use command: gcloud projects list 
-region=us-central1 #Set your region. Get Regions/Zones Use command: gcloud compute zones list
+# Define GCP variables (Mandatory: Define your project variable)
+project=angular-expanse-327722 #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
+region=us-central1 (OPTIONAL) #Set your region. Get Regions/Zones Use command: gcloud compute zones list
 zone=$region-c # Set availability zone: a, b or c.
 vpcrange=192.168.0.0/24
 envname=vpnlab
@@ -57,7 +57,7 @@ mypip=$(curl -4 ifconfig.io -s) #Gets your Home Public IP or replace with that i
 
 #Create VPC
 sudo gcloud compute networks create $envname-vpc --project=$project --subnet-mode=custom --mtu=1460 --bgp-routing-mode=regional
-gcloud compute networks subnets create $envname-subnet --project=$project --range=$vpcrange --network=$envname-vpc --region=$region
+sudo gcloud compute networks subnets create $envname-subnet --project=$project --range=$vpcrange --network=$envname-vpc --region=$region
 
 #Create Firewall Rule
 sudo gcloud compute firewall-rules create $envname-allow-traffic-from-azure --network $envname-vpc --allow tcp,udp,icmp --source-ranges 192.168.0.0/16,10.0.0.0/8,172.16.0.0/16,35.235.240.0/20,$mypip/32
@@ -121,17 +121,17 @@ ping 10.0.10.4 -O
 
 ### Clean up VPN Only ###
 # GCP
-gcloud compute vpn-tunnels delete vpn-to-azure --region $region --quiet
-gcloud compute routes delete vpn-to-azure-route-1 --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-esp --region $region --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-udp500 --region $region --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-udp4500 --region $region --quiet
-gcloud compute target-vpn-gateways delete onpremvpn --region $region --quiet
-gcloud compute addresses delete onpremvpn-pip --region $region --quiet
-gcloud compute instances delete $envname-vm1 --project=$project --zone=$zone --quiet
-gcloud compute firewall-rules delete $envname-allow-traffic-from-azure --quiet
-gcloud compute networks subnets delete $envname-subnet --project=$project --region=$region --quiet
-gcloud compute networks delete $envname-vpc --project=$project --quiet
+sudo gcloud compute vpn-tunnels delete vpn-to-azure --region $region --quiet
+sudo gcloud compute routes delete vpn-to-azure-route-1 --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-esp --region $region --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-udp500 --region $region --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-udp4500 --region $region --quiet
+sudo gcloud compute target-vpn-gateways delete onpremvpn --region $region --quiet
+sudo gcloud compute addresses delete onpremvpn-pip --region $region --quiet
+sudo gcloud compute instances delete $envname-vm1 --project=$project --zone=$zone --quiet
+sudo gcloud compute firewall-rules delete $envname-allow-traffic-from-azure --quiet
+sudo gcloud compute networks subnets delete $envname-subnet --project=$project --region=$region --quiet
+sudo gcloud compute networks delete $envname-vpc --project=$project --quiet
 
 # Azure
 az group delete -g $rg --no-wait --yes

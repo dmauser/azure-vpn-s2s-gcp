@@ -57,6 +57,8 @@ JsonOnPrem={\"name\":\"$OnPremName\",\"addressSpacePrefix\":\"$OnPremVnetAddress
 
 2) (Azure) - Deploy Azure Hub and Spokes. This process takes about 30 minutes to complete.
 
+Note: You will be prompted to add username (VmAdminUsername) and password (VmAdminPassword)
+
 ```bash
 #Deploy base lab environment = Hub + VPN Gateway + VM and two Spokes with one VM on each.
 echo "***  Note you will be prompted by username and password ***"
@@ -71,9 +73,9 @@ az deployment group create --name VPNERCoexist-$RANDOM --resource-group $rg \
 3) (GCP) - Define variables
 
 ```bash
-# Define GCP variables
-project=(Required) #Set your project Name. Get your PROJECT_ID use command: gcloud projects list 
-region=us-central1 #Set your region. Get Regions/Zones Use command: gcloud compute zones list
+# Define GCP variables (Mandatory: Define your project variable)
+project=<add here> #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
+region=us-central1 (OPTIONAL) #Set your region. Get Regions/Zones Use command: gcloud compute zones list
 zone=$region-c # Set availability zone: a, b or c.
 vpcrange=192.168.0.0/24
 envname=vpnlab
@@ -177,17 +179,17 @@ ping 10.0.12.4 #Azure Spoke 2 VM
 
 ```bash
 # GCP
-gcloud compute vpn-tunnels delete vpn-to-azure --region $region --quiet
-gcloud compute routes delete vpn-to-azure-route-1 --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-esp --region $region --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-udp500 --region $region --quiet
-gcloud compute forwarding-rules delete onpremvpn-rule-udp4500 --region $region --quiet
-gcloud compute target-vpn-gateways delete onpremvpn --region $region --quiet
-gcloud compute addresses delete onpremvpn-pip --region $region --quiet
-gcloud compute instances delete $envname-vm1 --project=$project --zone=$zone --quiet
-gcloud compute firewall-rules delete $envname-allow-traffic-from-azure --quiet
-gcloud compute networks subnets delete $envname-subnet --project=$project --region=$region --quiet
-gcloud compute networks delete $envname-vpc --project=$project --quiet
+sudo gcloud compute vpn-tunnels delete vpn-to-azure --region $region --quiet
+sudo gcloud compute routes delete vpn-to-azure-route-1 --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-esp --region $region --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-udp500 --region $region --quiet
+sudo gcloud compute forwarding-rules delete onpremvpn-rule-udp4500 --region $region --quiet
+sudo gcloud compute target-vpn-gateways delete onpremvpn --region $region --quiet
+sudo gcloud compute addresses delete onpremvpn-pip --region $region --quiet
+sudo gcloud compute instances delete $envname-vm1 --project=$project --zone=$zone --quiet
+sudo gcloud compute firewall-rules delete $envname-allow-traffic-from-azure --quiet
+sudo gcloud compute networks subnets delete $envname-subnet --project=$project --region=$region --quiet
+sudo gcloud compute networks delete $envname-vpc --project=$project --quiet
 ```
 
 - (Azure) - Remove resource group via Portal or CLI:
