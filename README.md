@@ -8,9 +8,26 @@ The goal of this lab is to create a S2S VPN between Azure and GCP.
 On Azure side we have a traditional Hub/Spoke while on GCP we have a single VM in VPC.
 You can also use GCP as emulated on-premises environment connecting to Azure.
 
-## Components
+## Architecture diagram
 
-## Lab
+![Environment](./media/azure-vpn-s2s-gcp.png)
+
+### Components
+
+## Solution components
+
+The components that you can deployed are exactly what is shown above on the Architecture Diagram:
+
+1. **Azure Hub VNET** (10.0.10.0/24) and subnets (subnet1, RouteServerSubnet, GatewaySubnet)
+2. **Azure Spoke1** (10.0.11.0/24) and subnet1
+3. **Azure Spoke2** (10.0.12.0/24) and subnet1
+4. Emulated **On-premises** on GCP VPC 192.168.0.0/24.
+5. Azure VPN Gateway: Single tunnel using static routing 192.168.0.0/24 (defined on Local Network Gateway).
+6. GCP VPN Gateway: Single tunnel using static routing to 10.0.0.0/8.
+7. Azure VMs provisioned: **Az-Hub-lxvm** (10.0.10.4), **Az-Spk1-lxvm** (10.0.11.4), **Az-Spk2-lxvm** (10.0.12.4) 
+8. GCP VM: *vpnlab-vm1** (192.168.0.4).
+
+## Lab steps
 
 ### Prerequisites
 
@@ -26,7 +43,7 @@ Alternatively you can open respective CLI on GCP Portal or Azure Portal and run 
 
 The steps listed below can be executed on Azure CLI or Google CLI, each step describes the respective Cloud provider where the command will be executed.
 
-1) (Azure) - Define variables. Make changes based on your requirements
+1) **(Azure)** - Define variables. Make changes based on your requirements
 
 ```bash
 #Azure Variables
@@ -55,7 +72,7 @@ JsonAzure={\"hubName\":\"$AzurehubName\",\"addressSpacePrefix\":\"$Azurehubaddre
 JsonOnPrem={\"name\":\"$OnPremName\",\"addressSpacePrefix\":\"$OnPremVnetAddressSpace\",\"subnet1Prefix\":\"$OnPremSubnet1prefix\",\"gatewaySubnetPrefix\":\"$OnPremgatewaySubnetPrefix\",\"asn\":\"$OnPremgatewayASN\"}
 ```
 
-2) (Azure) - Deploy Azure Hub and Spokes. This process takes about 30 minutes to complete.
+2) **(Azure)** - Deploy Azure Hub and Spokes. This process takes about 30 minutes to complete.
 
 Note: You will be prompted to add username (VmAdminUsername) and password (VmAdminPassword)
 
@@ -70,10 +87,10 @@ az deployment group create --name VPNERCoexist-$RANDOM --resource-group $rg \
 --output none
 ```
 
-3) (GCP) - Define variables
+3) **(GCP)** - Define variables
 
 ```bash
-# Define GCP variables (Mandatory: Define your project variable)
+# Define GCP variables (Mandatory: Define your project as variable)
 project=<add here> #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
 region=us-central1 (OPTIONAL) #Set your region. Get Regions/Zones Use command: gcloud compute zones list
 zone=$region-c # Set availability zone: a, b or c.
@@ -83,7 +100,7 @@ vmname=vm1
 mypip=$(curl -4 ifconfig.io -s) #Gets your Home Public IP or replace with that information. It will add it to the Firewall Rule.
 ```
 
-4) (GCP) Deploy VPC, VPN Gateway and Linux VM.
+4) **(GCP)** Deploy VPC, VPN Gateway and Linux VM.
 
 ```bash
 #Create VPC
@@ -107,7 +124,7 @@ sudo gcloud compute forwarding-rules create onpremvpn-rule-udp4500 --project=$pr
 
 5) Setup VPN between on Azure and GCP:
 
-- Azure
+- **Azure**
 
 ```bash
 #Azure Local Network Gateway
@@ -126,7 +143,7 @@ az network vpn-connection create --name Azure-to-OnpremGCP \
 --local-gateway2 lng-onprem-gcp
 ```
 
-- GCP
+- **GCP**
 
 ```bash
 #GCP VPN Tunnel to Azure
@@ -137,7 +154,7 @@ sudo gcloud compute routes create vpn-to-azure-route-1 --project=$project --netw
 
 6) Check status of VPN connection
 
-- Azure
+- **Azure**
 
 ```bash
 # a) Check Connection Status
@@ -147,7 +164,7 @@ az network vpn-connection show -g $rg --n Azure-to-OnpremGCP --query connectionS
 az network vpn-connection list-ike-sas -g $rg --n Azure-to-OnpremGCP
 ```
 
-- GCP 
+- **GCP** 
 
 ```bash
 #GCP VPN Status on GCP Side
@@ -179,8 +196,9 @@ Optional - You can logon on any Azure VM and ping GCP VM IP (192.168.0.2).
 
 ## Clean up
 
-- (GCP) remove lab environment. 
-(Note: it requires the variables defined during the setup to be effective before running the commands below)
+- **(GCP)** remove lab environment. 
+
+    (Note: it requires the variables defined during the setup to be effective before running the commands below)
 
 ```bash
 # GCP
@@ -197,7 +215,7 @@ sudo gcloud compute networks subnets delete $envname-subnet --project=$project -
 sudo gcloud compute networks delete $envname-vpc --project=$project --quiet
 ```
 
-- (Azure) - Remove resource group via Portal or CLI:
+- **(Azure)** - Remove resource group via Portal or CLI:
 
 ```bash
 az group delete -g $rg --no-wait --yes
