@@ -1,18 +1,13 @@
 # Site-to-Site VPN between Azure and GCP (static routing)
 
-Lab to build Azure Hub Spoke with S2S VPN to GCP using static routing.
 
-## Intro
+## Introduction
 
-The goal of this lab is to create a S2S VPN between Azure and GCP.
-On Azure side we have a traditional Hub/Spoke while on GCP we have a single VM in VPC.
-You can also use GCP as emulated on-premises environment connecting to Azure.
+On this LAB, an S2S VPN will get created between Azure and GCP using CLI. On the Azure side, we have a traditional Hub/Spoke, while on GCP we have a single VM in VPC. You can also use GCP as emulated on-premises environment connecting to Azure using S2S VPN. This lab uses static routing and, dynamic routing using BGP will be available soon.
 
 ## Architecture diagram
 
 ![Environment](./media/azure-vpn-s2s-gcp.png)
-
-### Components
 
 ## Solution components
 
