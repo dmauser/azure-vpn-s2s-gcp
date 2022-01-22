@@ -22,8 +22,8 @@ The components that you can deployed are exactly what is shown above on the Arch
 2. **Azure Spoke1** (10.0.11.0/24) and subnet1
 3. **Azure Spoke2** (10.0.12.0/24) and subnet1
 4. Emulated **On-premises** on GCP VPC 192.168.0.0/24.
-5. Azure VPN Gateway: Single tunnel using static routing 192.168.0.0/24 (defined on Local Network Gateway).
-6. GCP VPN Gateway: Single tunnel using static routing to 10.0.0.0/8.
+5. Azure VPN Gateway: Single tunnel using static routing 192.168.0.0/24 (GCP).
+6. GCP VPN Gateway: Single tunnel using static routing to 10.0.0.0/8 (Azure).
 7. Azure VMs provisioned: **Az-Hub-lxvm** (10.0.10.4), **Az-Spk1-lxvm** (10.0.11.4), **Az-Spk2-lxvm** (10.0.12.4) 
 8. GCP VM: *vpnlab-vm1** (192.168.0.4).
 
