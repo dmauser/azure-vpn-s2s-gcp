@@ -164,7 +164,7 @@ az network vpn-connection show -g $rg --n Azure-to-OnpremGCP --query connectionS
 az network vpn-connection list-ike-sas -g $rg --n Azure-to-OnpremGCP
 ```
 
-- **GCP** 
+- **GCP**
 
 ```bash
 #GCP VPN Status on GCP Side
@@ -187,9 +187,9 @@ echo $Azurespoke2Name-lxvm && az network nic show --resource-group $rg -n $Azure
 sudo gcloud compute ssh $envname-vm1 --zone=$zone
 
 # Inside GCP VM ping Azure VM
-ping 10.0.10.4 -O -c 5 #Az-Hub-Lxvm
-ping 10.0.11.4 -O -c 5 #Az-Spk1-lxvm
-ping 10.0.12.4 -O -c 5 #Az-Spk2-lxvm
+echo Az-Hub-Lxvm && ping 10.0.10.4 -O -c 5
+echo Az-Spk1-lxvm && ping 10.0.11.4 -O -c 5
+echo Az-Spk2-lxvm && ping 10.0.12.4 -O -c 5
 ```
 
 Optional - You can logon on any Azure VM and ping GCP VM IP (192.168.0.2).
