@@ -85,7 +85,7 @@ az deployment group create --name VPNERCoexist-$RANDOM --resource-group $rg \
 3) **(GCP)** - Define variables
 
 ```bash
-# Define GCP variables (Mandatory: Define your project as variable)
+# Define GCP variables (Mandatory: Define your GCP project as variable)
 project=<add here> #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
 region=us-central1 (OPTIONAL) #Set your region. Get Regions/Zones Use command: gcloud compute zones list
 zone=$region-c # Set availability zone: a, b or c.

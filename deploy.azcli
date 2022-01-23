@@ -46,8 +46,8 @@ az deployment group create --name VPNERCoexist-$RANDOM --resource-group $rg \
 --parameters deployHubVPNGateway=true gatewaySku=VpnGw1 vpnGatewayGeneration=Generation1 Restrict_SSH_VM_AccessByPublicIP=$mypip sharedKey=$sharedkey deployHubERGateway=false Onprem=$JsonOnPrem Azure=$JsonAzure \
 --output none
 
-# Define GCP variables (Mandatory: Define your project variable)
-project=angular-expanse-327722 #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
+# Define GCP variables (Mandatory: Define your GCP project variable)
+project=<add here> #Set your project Name (REQUIRED). Get your PROJECT_ID use command: sudo gcloud projects list 
 region=us-central1 # (OPTIONAL) Set your region. Get Regions/Zones Use command: gcloud compute zones list
 zone=$region-c # Set availability zone: a, b or c.
 vpcrange=192.168.0.0/24
@@ -86,7 +86,7 @@ azgwnamepip=$(az network public-ip show -g $rg -n Az-Hub-vpngw-pip1 --query ipAd
 sudo gcloud compute vpn-tunnels create vpn-to-azure --project=$project --region=$region --peer-address=$azgwnamepip --shared-secret=$sharedkey --ike-version=2 --local-traffic-selector=0.0.0.0/0 --remote-traffic-selector=0.0.0.0/0 --target-vpn-gateway=onpremvpn 
 sudo gcloud compute routes create vpn-to-azure-route-1 --project=$project --network=$envname-vpc --priority=1000 --destination-range=10.0.0.0/8 --next-hop-vpn-tunnel=vpn-to-azure --next-hop-vpn-tunnel-region=$region
 
-# Azure VPN tunnel to GCP
+#Azure VPN tunnel to GCP
 gwname=Az-Hub-vpngw
 az network vpn-connection create --name Azure-to-OnpremGCP \
 --resource-group $rg \
@@ -95,7 +95,7 @@ az network vpn-connection create --name Azure-to-OnpremGCP \
 --shared-key $sharedkey \
 --local-gateway2 lng-onprem-gcp
 
-# Check VPN Status on Azure side
+#Check VPN Status on Azure side
 # a) Check Connection Status
 az network vpn-connection show -g $rg --n Azure-to-OnpremGCP --query connectionStatus -o tsv
 
@@ -110,20 +110,19 @@ sudo gcloud compute vpn-tunnels describe vpn-to-azure \
    --format='flattened(status,detailedStatus)'
 
 
-# Test VPN connectivity - SSH Azure VM and ping GCP VM.
-# Get Azure Hub and Spoke VMs IPs 
+#Test VPN connectivity - SSH Azure VM and ping GCP VM.
+#Get Azure Hub and Spoke VMs IPs 
 echo $AzurehubName-lxvm && az network nic show --resource-group $rg -n $AzurehubName-lxvm-nic --query "ipConfigurations[].privateIpAddress" -o tsv &&
 echo $Azurespoke1Name-lxvm && az network nic show --resource-group $rg -n $Azurespoke1Name-lxvm-nic --query "ipConfigurations[].privateIpAddress" -o tsv &&
 echo $Azurespoke2Name-lxvm && az network nic show --resource-group $rg -n $Azurespoke2Name-lxvm-nic --query "ipConfigurations[].privateIpAddress" -o tsv
 
-# Log on GCP VM and try to reach all tree VMs listed above:
+#Log on GCP VM and try to reach all tree VMs listed above:
 sudo gcloud compute ssh $envname-vm1 --zone=$zone
 
-# Inside GCP VM ping Azure VMs
+#Inside GCP VM ping Azure VMs
 echo Az-Hub-Lxvm && ping 10.0.10.4 -O -c 5
 echo Az-Spk1-lxvm && ping 10.0.11.4 -O -c 5
 echo Az-Spk2-lxvm && ping 10.0.12.4 -O -c 5
-
 
 # Optional - You can logon on Azure VM and ping GCP VM.
 
