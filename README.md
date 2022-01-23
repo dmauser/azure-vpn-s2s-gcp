@@ -3,7 +3,13 @@
 
 ## Introduction
 
-On this LAB, an S2S VPN will get created between Azure and GCP using CLI. On the Azure side, we have a traditional Hub/Spoke, while on GCP we have a single VM in VPC. You can also use GCP as emulated on-premises environment connecting to Azure using S2S VPN. This lab uses static routing and, dynamic routing using BGP will be available soon.
+On this LAB, an S2S VPN will get created between Azure and GCP using CLI commands on both Cloud Providers. On the Azure side, we have a traditional Hub/Spoke, while on GCP we have a single VM in VPC. The main goals of this lab is to:
+
+1) Build a IPSec site-to-site (S2S) VPN between Azure and GCP.
+2) Use GCP as an emulated On-premises environment to reach an Azure Hub/Spoke environment.
+
+
+:point_right: Note: that the scope of the IPSec S2S VPN is to use static routing. Another similar lab using dynamic routing (BGP) with active-active IPSec tunnel will be availadble soon.
 
 ## Architecture diagram
 
