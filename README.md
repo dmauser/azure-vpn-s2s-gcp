@@ -29,7 +29,14 @@ The components that you can deployed are exactly what is shown above on the Arch
 You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will make your life easier provisioning this solution. The steps below have been validated on Ubuntu 18.4.
 
 - Azure CLI installation instructions: [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-- GCP CLI instruction follow: [What is gcloud and How to install on Windows, macOS and Linux?](https://geekflare.com/gcloud-installation-guide/)
+    - Tip: Quick install Azure CLI on Linux by running command:
+
+    ```bash
+    curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+    ```    
+
+- GCP CLI instruction follow: GCP CLI: [Installing Cloud SDK](https://cloud.google.com/sdk/docs/install#deb)
+    - Other useful reference: [What is gcloud and How to install on Windows, macOS and Linux?](https://geekflare.com/gcloud-installation-guide/)
 - Make sure you have proper subscription and permission before you proceed to the steps below.
 
 Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side.
