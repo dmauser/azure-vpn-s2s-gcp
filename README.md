@@ -43,7 +43,7 @@ You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will m
     - Other useful reference: [What is gcloud and How to install on Windows, macOS and Linux?](https://geekflare.com/gcloud-installation-guide/)
 - Make sure you have proper subscription and permission before you proceed to the steps below.
 
-Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side. However, keep in mind some of the commands may fail because of variable parsed between both Azure and GCP CLI commands.
+Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side. However, keep in mind some of the commands may fail because of the variable parsed between both Azure and GCP CLI commands.
 
 :point_right: All the commands listed in this section are also included in CLI file in this repo: [deploy.azcli]()
 
