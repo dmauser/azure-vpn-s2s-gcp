@@ -46,6 +46,8 @@ You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will m
 
 Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side.
 
+:point_right: All the commands listed in this section are also included in CLI file in this repo: [deploy.azcli]()
+
 ### Steps
 
 The steps listed below can be executed on Azure CLI or Google CLI, each step describes the respective Cloud provider where the command will be executed.
