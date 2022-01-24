@@ -1,6 +1,5 @@
 # Site-to-Site VPN between Azure and GCP (static routing)
 
-
 ## Introduction
 
 On this LAB, an S2S VPN will get created between Azure and GCP using CLI commands on both Cloud Providers. On the Azure side, we have a traditional Hub/Spoke, while on GCP we have a single VM in VPC. The main goals of this lab is to:
@@ -8,7 +7,7 @@ On this LAB, an S2S VPN will get created between Azure and GCP using CLI command
 1) Build a IPSec site-to-site (S2S) VPN between Azure and GCP.
 2) Use GCP as an emulated On-premises environment to reach an Azure Hub/Spoke environment.
 
-:point_right: Note: On the scope of this LAB, the IPSec S2S VPN is using static routing. Another similar lab, using dynamic routing (BGP) with active-active IPSec tunnel, will be available soon.
+:point_right: Note: this LAB uses IPSec S2S VPN tunnel using static routing. Another similar lab, using dynamic routing (BGP) with active-active IPSec tunnel, will be available soon.
 
 ## Architecture diagram
 
@@ -24,27 +23,27 @@ The components that you can deployed are exactly what is shown above on the Arch
 4. Emulated **On-premises** on GCP VPC 192.168.0.0/24.
 5. Azure VPN Gateway: Single tunnel using static routing 192.168.0.0/24 (GCP).
 6. GCP VPN Gateway: Single tunnel using static routing to 10.0.0.0/8 (Azure).
-7. Azure VMs provisioned: **Az-Hub-lxvm** (10.0.10.4), **Az-Spk1-lxvm** (10.0.11.4), **Az-Spk2-lxvm** (10.0.12.4) 
+7. Azure VMs provisioned: **Az-Hub-lxvm** (10.0.10.4), **Az-Spk1-lxvm** (10.0.11.4), **Az-Spk2-lxvm** (10.0.12.4).
 8. GCP VM: *vpnlab-vm1** (192.168.0.4).
 
 ## Lab steps
 
 ### Prerequisites
 
-You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will make your life easier provisioning this solution. The steps below have been validated on Ubuntu 18.4.
+You can get Azure CLI and GCP CLI in the same OS (Linux or Windows). That will make your life easier provisioning this solution because both az and gcloud commands can consume the variables making easy to build the lab solution. The steps below have been validated on Ubuntu 18.4.
 
 - Azure CLI installation instructions: [How to install the Azure CLI](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli?view=azure-cli-latest)
-    - Tip: Quick install Azure CLI on Linux by running command:
+    - Tip: to install Azure CLI on Linux just run the command:
 
     ```bash
     curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
-    ```    
+    ```
 
 - GCP CLI instruction follow: GCP CLI: [Installing Cloud SDK](https://cloud.google.com/sdk/docs/install#deb)
     - Other useful reference: [What is gcloud and How to install on Windows, macOS and Linux?](https://geekflare.com/gcloud-installation-guide/)
 - Make sure you have proper subscription and permission before you proceed to the steps below.
 
-Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side.
+Alternatively you can open respective CLI on GCP Portal or Azure Portal and run the steps below side-by-side. However, keep in mind some of the commands may fail because of variable parsed between both Azure and GCP CLI commands.
 
 :point_right: All the commands listed in this section are also included in CLI file in this repo: [deploy.azcli]()
 
@@ -205,7 +204,7 @@ Optional - You can logon on any Azure VM and ping GCP VM IP (192.168.0.2).
 
 ## Clean up
 
-- **(GCP)** remove lab environment. 
+- **(GCP)** remove lab environment.
 
     (Note: it requires the variables defined during the setup to be effective before running the commands below)
 
